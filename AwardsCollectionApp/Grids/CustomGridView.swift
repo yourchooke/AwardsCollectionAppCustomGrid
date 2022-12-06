@@ -10,7 +10,7 @@ import SwiftUI
 struct CustomGridView<Content, T>: View where Content : View {
     let columns: Int
     let items: [T]
-    let content: (T) -> Content
+    let content: (CGFloat, T) -> Content
     
     var rows: Int {
         items.count / columns
@@ -27,8 +27,7 @@ struct CustomGridView<Content, T>: View where Content : View {
                         HStack {
                             ForEach(0..<columns) { columnIndex in
                                 if let index = indexFor(row: rowIndex, column: columnIndex) {
-                                    content(items[index])
-                                        .frame(width: sideSize, height: sideSize)
+                                    content(sideSize, items[index])
                                 } else {
                                    Spacer()
                                 }
@@ -50,8 +49,9 @@ struct CustomGridView<Content, T>: View where Content : View {
 
 struct CustomGridView_Previews: PreviewProvider {
     static var previews: some View {
-        CustomGridView(columns: 3, items: [11, 3, 4, 7, 76, 2, 1]) { item in
+        CustomGridView(columns: 3, items: [11, 3, 4, 7, 76, 2, 1]) { sideSize, item in
             Text("\(item)")
+                .frame(width: sideSize, height: sideSize)
         }
     }
 }
